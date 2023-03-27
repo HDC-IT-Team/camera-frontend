@@ -1,0 +1,18 @@
+<h3 mat-dialog-title><b>{{ title }}</b></h3>
+<hr>
+
+<form mat-dialog-content class="row" [formGroup]="recordFormGroup">
+    <div class="h-position-absolute h-top-0 h-left-0 h-z-index-100 h-spinner-container" *ngIf="showSpinner">
+        <mat-spinner [diameter]="25"></mat-spinner>
+    </div>
+
+    <mat-form-field *ngFor="let item of formMetadata" appearance="outline" [ngClass]="{ 'd-none': item.invisible }">
+        <mat-label>{{ item.formControlLabel }}:</mat-label>
+        <input matInput type="text" [formControlName]="item.formControlName" [required]="item.isRequired">
+    </mat-form-field>
+</form>
+
+<div mat-dialog-action class="d-flex justify-content-end mt-2">
+    <button mat-button (click)="closeDialog(true)">Save</button>
+    <button mat-button (click)="closeDialog(false)">Cancel</button>
+</div>

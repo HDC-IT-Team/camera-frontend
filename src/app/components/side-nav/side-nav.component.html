@@ -1,0 +1,57 @@
+<mat-accordion class="h-flex-scroll-child">
+    <mat-expansion-panel *ngFor="let location of locationList" [expanded]="location.expanded">
+        <mat-expansion-panel-header
+            (click)="shareAdminData(location.id, location.locationName, sharedDataTypes.location, undefined, location.ipFolders)">
+            <mat-panel-title>
+                <div class="d-flex align-items-center">
+                    <mat-icon class="h-side-nav-icon me-2">location_on</mat-icon>
+                    {{ location.locationName }}
+                </div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <ng-container *ngIf="isAdmin else guest">
+            <mat-expansion-panel *ngFor="let ipFolder of location.ipFolders" [expanded]="ipFolder.expanded">
+                <mat-expansion-panel-header
+                    (click)="shareAdminData(ipFolder.id, ipFolder.folderName, sharedDataTypes.ipFolder, location.id, ipFolder.cameras)">
+                    <mat-panel-title>
+                        <div class="d-flex align-items-center">
+                            <mat-icon class="h-side-nav-icon me-2">folder</mat-icon>
+                            {{ ipFolder.folderName }}
+                        </div>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <mat-selection-list [multiple]="false">
+                    <mat-list-option *ngFor="let camera of ipFolder.cameras"
+                        (click)="shareAdminData(camera.id, camera.cameraName, sharedDataTypes.camera, ipFolder.id, undefined, camera.code);">
+                        <div class="d-flex align-items-center">
+                            <mat-icon class="h-side-nav-icon me-2">camera_alt</mat-icon>
+                            {{ camera.cameraName }}
+                        </div>
+                    </mat-list-option>
+                </mat-selection-list>
+
+            </mat-expansion-panel>
+        </ng-container>
+
+        <ng-template #guest>
+            <mat-selection-list [multiple]="false">
+                <ng-container *ngFor="let ipFolder of location.ipFolders">
+                    <mat-list-option *ngFor="let camera of ipFolder.cameras"
+                        (click)="getPhoto(camera.code, ipFolder.folderName)">
+                        <div class="d-flex align-items-center">
+                            <mat-icon class="h-side-nav-icon me-2">camera_alt</mat-icon>
+                            {{ camera.cameraName }}
+                        </div>
+                    </mat-list-option>
+                </ng-container>
+            </mat-selection-list>
+        </ng-template>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<button *ngIf="isAdmin" mat-raised-button class="d-flex justify-content-center h-main-btn" (click)="addLocation()">
+    <mat-icon class="me-2">add_circle</mat-icon>
+    <span>New Location</span>
+</button>

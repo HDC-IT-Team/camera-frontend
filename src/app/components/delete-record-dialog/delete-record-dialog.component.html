@@ -1,0 +1,15 @@
+<h3 mat-dialog-title><b>{{ title }}</b></h3>
+<hr>
+
+<div mat-dialog-content class="row">
+    <div class="h-position-absolute h-top-0 h-left-0 h-z-index-100 h-spinner-container" *ngIf="showSpinner">
+        <mat-spinner [diameter]="25"></mat-spinner>
+    </div>
+
+    <h4>Are you sure you want to delete the record "{{ recordName }}"</h4>
+</div>
+
+<div mat-dialog-action class="d-flex justify-content-end mt-2">
+    <button mat-button (click)="closeDialog(true)">Delete</button>
+    <button mat-button (click)="closeDialog(false)">Cancel</button>
+</div>

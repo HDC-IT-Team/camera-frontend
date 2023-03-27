@@ -1,0 +1,31 @@
+html {
+    box-sizing: border-box;
+    -ms-overflow-style: scrollbar;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+// @import "~bootstrap/scss/bootstrap";
+
+// Required
+@import "bootstrap/scss/functions";
+
+// Required
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/root";
+
+//Needed
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/mixins/grid";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "bootstrap/scss/containers";
+
+@import "bootstrap/scss/utilities/api";

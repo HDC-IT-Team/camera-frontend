@@ -1,0 +1,75 @@
+<mat-card
+    class="d-flex flex-column justify-content-center align-items-start flex-sm-row justify-content-sm-between align-items-sm-center h-title-nav">
+    <h3 class="mb-0 d-flex flex-wrap">
+        <span *ngFor="let item of navigationArray; let i = index">
+            <a href="#" *ngIf="i < navigationArray.length - 1 else currentItem"
+                (click)="$event.preventDefault(); selectChildItem(item, item.parentId)">{{ item.name }}</a>
+            &nbsp;/&nbsp;
+            <ng-template #currentItem>{{ item.name }}</ng-template>
+        </span>
+    </h3>
+
+    <div class="d-flex justify-content-end justify-content-sm-between h-title-options">
+        <button mat-icon-button (click)="$event.stopPropagation(); updateRecord()">
+            <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button
+            (click)="$event.stopPropagation(); openDeleteDialog(adminData.id, adminData.name, adminData.type, true)">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</mat-card>
+
+<div *ngIf=" adminData.type != itemType.camera else camera" class="mt-2 d-flex flex-column h-flex-scroll-child">
+    <div class="d-flex flex-wrap">
+        <mat-card
+            class="p-0 h-child-card-item h-new-item ms-3 mt-3 d-flex flex-column align-items-center justify-content-center"
+            (click)="addUpdateChildRecord(true)">
+            <div class="h-item-options">
+                <button mat-icon-button>
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button>
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <div class="h-item-body">
+                <mat-icon class="h-item-icon">
+                    {{ adminData.type == itemType.location ? 'create_new_folder' : 'camera_enhance' }}
+                </mat-icon>
+                <h4>{{ adminData.type == itemType.location ? 'New Ip Folder' : 'New Camera' }}</h4>
+            </div>
+        </mat-card>
+
+        <mat-card *ngFor="let item of adminData.children" (click)="selectChildItem(item, adminData.id)"
+            class="p-0 h-child-card-item ms-3 mt-3 d-flex flex-column align-items-center">
+            <div class="h-item-options">
+                <button mat-icon-button (click)="$event.stopPropagation(); addUpdateChildRecord(false, item)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button
+                    (click)="$event.stopPropagation(); openDeleteDialog(item.id, item.folderName || item.cameraName, item.folderName ? itemType.ipFolder : itemType.camera)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <div class="h-item-body">
+                <mat-icon class="h-item-icon">{{ adminData.type == itemType.location ? 'folder' : 'camera_alt'
+                    }}</mat-icon>
+                <h4>{{ adminData.type == itemType.location ? item.folderName : item.code + " (" + item.cameraName + ")"
+                    }}
+                </h4>
+            </div>
+        </mat-card>
+    </div>
+</div>
+
+<ng-template #camera>
+    <div class="mt-2 w-100 h-flex-scroll-child" [ngClass]="{ 'h-no-image': !image }">
+        <img *ngIf="image" width="100%" src="{{ image }}">
+    </div>
+</ng-template>

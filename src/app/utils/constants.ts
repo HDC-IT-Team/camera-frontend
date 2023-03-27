@@ -1,0 +1,1 @@
+export const DEFAULT_PREVIEW_IMG = './assets/img/default-image.png';

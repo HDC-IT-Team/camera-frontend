@@ -1,0 +1,60 @@
+//DISPLAY RESOLUTION:
+$TS : 360px; //TINY SMALL
+$XS : 375px; //EXTRA SMALL
+$S  : 476px; //SMALL
+$MS : 576px; //MEDIUM SMALL
+$M  : 768px; //MEDIUM
+$L  : 992px; //LARGE
+$XL : 1200px; //EXTRA LARGE
+$H : 1400px; //HUGE
+
+//MEDIA QUERIES:
+@mixin MQ($canvas) {
+    @if $canvas==TS {
+        @media only screen and (min-width: $TS) {
+            @content;
+        }
+    }
+
+    @if $canvas==XS {
+        @media only screen and (min-width: $XS) {
+            @content;
+        }
+    }
+
+    @if $canvas==S {
+        @media only screen and (min-width: $S) {
+            @content;
+        }
+    }
+
+    @if $canvas==MS {
+        @media only screen and (min-width: $MS) {
+            @content;
+        }
+    }
+
+    @else if $canvas==M {
+        @media only screen and (min-width: $M) {
+            @content;
+        }
+    }
+
+    @else if $canvas==L {
+        @media only screen and (min-width: $L) {
+            @content;
+        }
+    }
+
+    @else if $canvas==XL {
+        @media only screen and (min-width: $XL) {
+            @content;
+        }
+    }
+
+    @else if $canvas==H {
+        @media only screen and (min-width: $H) {
+            @content;
+        }
+    }
+}

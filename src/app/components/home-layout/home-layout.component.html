@@ -1,0 +1,17 @@
+<div class="d-flex flex-row w-100 px-3 pb-2 pb-lg-3 pt-2 h-flex-1">
+    <div class="col-12 col-lg-4 col-xl-3 pe-lg-2 h-side-nav-wrapper">
+        <div class="h-side-nav-background d-lg-none" (click)="hideSideNav()"></div>
+        <mat-card class="col-11 col-sm-7 col-md-6 col-lg-12 h-100 d-flex h-side-nav">
+            <button mat-icon-button class="d-lg-none h-close-side-nav-btn" (click)="hideSideNav()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <side-nav class="d-flex flex-column justify-content-between h-flex-1 mt-4 mt-lg-0"></side-nav>
+        </mat-card>
+    </div>
+
+    <div class="col-12 col-lg-8 col-xl-9 ps-lg-2 d-flex flex-column">
+        <mat-card class="h-flex-1 d-flex justify-content-center h-child-routes-container">
+            <router-outlet></router-outlet>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<form #frmLogin="ngForm" (ngSubmit)="submitLogin()"
+    class="w-100 d-flex justify-content-center align-items-center h-flex-1">
+    <mat-card class="p-5 d-flex flex-column justify-content-center align-items-center h-position-relative">
+        <div class="h-position-absolute h-top-0 h-left-0 h-z-index-100 h-spinner-container" *ngIf="showLoginSpinner">
+            <mat-spinner [diameter]="35"></mat-spinner>
+        </div>
+        <mat-form-field appearance="outline">
+            <mat-label>Username:</mat-label>
+            <input matInput type="text" name="usern" #usern="ngModel" [(ngModel)]="username" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="pass" #pass="ngModel" [(ngModel)]="password" required>
+        </mat-form-field>
+
+        <button type="submit" mat-button color="primary" class="mt-2">Login</button>
+    </mat-card>
+</form>
