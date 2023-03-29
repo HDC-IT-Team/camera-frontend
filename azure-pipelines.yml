@@ -35,6 +35,8 @@ jobs:
             npm install
             ng build --configuration=$(CONFIG) --base-href $(BASEREF) --aot
           displayName: 'npm install and build'
+        - script: tree "/home/vsts/work/1/s/"
+
 
         - task: CopyFiles@2
           inputs:
