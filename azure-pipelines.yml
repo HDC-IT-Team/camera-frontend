@@ -27,7 +27,6 @@ jobs:
           inputs:
             versionSpec: '14.x'
           displayName: 'Install Node.js'
-        - script: tree "/home/vsts/work/1/s/dist/"
         - script: echo "sourcebranch is  $(Build.SourceBranch) "
         - script: echo "baseref is  $(BASEREF)"
         - script: echo "config is  $(CONFIG)"
