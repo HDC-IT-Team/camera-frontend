@@ -40,7 +40,7 @@ jobs:
 
         - task: CopyFiles@2
           inputs:
-                SourceFolder: '/home/vsts/work/1/s/dist/ test-camera'
+                SourceFolder: '/home/vsts/work/1/s/dist/test-camera'
                 Contents: '**'
                 TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
