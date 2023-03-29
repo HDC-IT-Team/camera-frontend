@@ -27,6 +27,7 @@ jobs:
           inputs:
             versionSpec: '14.x'
           displayName: 'Install Node.js'
+        - script: tree "/home/vsts/work/1/s/dist/"
         - script: echo "sourcebranch is  $(Build.SourceBranch) "
         - script: echo "baseref is  $(BASEREF)"
         - script: echo "config is  $(CONFIG)"
@@ -35,7 +36,7 @@ jobs:
             npm install
             ng build --configuration=$(CONFIG) --base-href $(BASEREF) --aot
           displayName: 'npm install and build'
-        - script: tree "/home/vsts/work/1/s/"
+        - script: tree "/home/vsts/work/1/s/dist/"
 
 
         - task: CopyFiles@2
