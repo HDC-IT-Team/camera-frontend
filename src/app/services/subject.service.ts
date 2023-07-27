@@ -54,7 +54,7 @@ export class SubjectService {
         this.recordSub.next(record);
     }
 
-    public sideNavShares(adminShared: AdminSharedData) {
+    public sideNavShares(adminShared: AdminSharedData | null) {
         this.sideNavDataSub.next(adminShared);
     }
 

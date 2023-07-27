@@ -1,57 +1,81 @@
-<mat-accordion class="h-flex-scroll-child">
-    <mat-expansion-panel *ngFor="let location of locationList" [expanded]="location.expanded">
-        <mat-expansion-panel-header
-            (click)="shareAdminData(location.id, location.locationName, sharedDataTypes.location, undefined, location.ipFolders)">
-            <mat-panel-title>
-                <div class="d-flex align-items-center">
-                    <mat-icon class="h-side-nav-icon me-2">location_on</mat-icon>
-                    {{ location.locationName }}
-                </div>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
+<div class="h-position-relative h-flex-1 d-flex flex-column" [ngClass]="{ 'justify-content-end': showSpinner }">
+    <div class="h-position-absolute h-top-0 h-left-0 h-z-index-100 h-spinner-container" *ngIf="showSpinner">
+        <mat-spinner [diameter]="30"></mat-spinner>
+    </div>
 
-        <ng-container *ngIf="isAdmin else guest">
-            <mat-expansion-panel *ngFor="let ipFolder of location.ipFolders" [expanded]="ipFolder.expanded">
-                <mat-expansion-panel-header
-                    (click)="shareAdminData(ipFolder.id, ipFolder.folderName, sharedDataTypes.ipFolder, location.id, ipFolder.cameras)">
-                    <mat-panel-title>
-                        <div class="d-flex align-items-center">
-                            <mat-icon class="h-side-nav-icon me-2">folder</mat-icon>
-                            {{ ipFolder.folderName }}
-                        </div>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
+    <mat-accordion class="h-flex-scroll-child" *ngIf="locationList.length else emptyLayout">
+        <mat-expansion-panel *ngFor="let location of locationList" [expanded]="location.expanded">
+            <mat-expansion-panel-header
+                (click)="shareAdminData(location.id, location.locationName, sharedDataTypes.location, undefined, location.ipFolders)">
+                <mat-panel-title>
+                    <div class="d-flex align-items-center">
+                        <mat-icon class="h-side-nav-icon me-2">location_on</mat-icon>
+                        {{ location.locationName }}
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
 
+            <ng-container *ngIf="isAdmin else guest">
+                <mat-expansion-panel *ngFor="let ipFolder of location.ipFolders" [expanded]="ipFolder.expanded">
+                    <mat-expansion-panel-header
+                        (click)="shareAdminData(ipFolder.id, ipFolder.folderName, sharedDataTypes.ipFolder, location.id, ipFolder.cameras)">
+                        <mat-panel-title>
+                            <div class="d-flex align-items-center">
+                                <mat-icon class="h-side-nav-icon me-2">folder</mat-icon>
+                                {{ ipFolder.folderName }}
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <mat-selection-list [multiple]="false">
+                        <mat-list-option *ngFor="let camera of ipFolder.cameras"
+                            (click)="shareAdminData(camera.id, camera.cameraName, sharedDataTypes.camera, ipFolder.id, undefined, camera.code);">
+                            <div class="d-flex align-items-center">
+                                <mat-icon class="h-side-nav-icon me-2">camera_alt</mat-icon>
+                                {{ camera.cameraName }}
+                            </div>
+                        </mat-list-option>
+                    </mat-selection-list>
+
+                </mat-expansion-panel>
+            </ng-container>
+
+            <ng-template #guest>
                 <mat-selection-list [multiple]="false">
-                    <mat-list-option *ngFor="let camera of ipFolder.cameras"
-                        (click)="shareAdminData(camera.id, camera.cameraName, sharedDataTypes.camera, ipFolder.id, undefined, camera.code);">
-                        <div class="d-flex align-items-center">
-                            <mat-icon class="h-side-nav-icon me-2">camera_alt</mat-icon>
-                            {{ camera.cameraName }}
-                        </div>
-                    </mat-list-option>
+                    <ng-container *ngFor="let ipFolder of location.ipFolders">
+                        <mat-list-option *ngFor="let camera of ipFolder.cameras"
+                            (click)="getPhoto(camera.code, ipFolder.folderName)">
+                            <div class="d-flex align-items-center">
+                                <mat-icon class="h-side-nav-icon me-2">camera_alt</mat-icon>
+                                {{ camera.cameraName }}
+                            </div>
+                        </mat-list-option>
+                    </ng-container>
                 </mat-selection-list>
+            </ng-template>
+        </mat-expansion-panel>
+    </mat-accordion>
 
-            </mat-expansion-panel>
-        </ng-container>
+    <ng-template #emptyLayout>
+        <div class="h-flex-scroll-child" *ngIf="!showSpinner">
+            <div class="alert alert-primary d-flex align-items-start" role="alert">
+                <mat-icon class="me-2">info</mat-icon>
+                <h4 *ngIf="isAdmin else guestMessage">
+                    You have not created any location yet. To do so, please click on the button below.
+                </h4>
 
-        <ng-template #guest>
-            <mat-selection-list [multiple]="false">
-                <ng-container *ngFor="let ipFolder of location.ipFolders">
-                    <mat-list-option *ngFor="let camera of ipFolder.cameras"
-                        (click)="getPhoto(camera.code, ipFolder.folderName)">
-                        <div class="d-flex align-items-center">
-                            <mat-icon class="h-side-nav-icon me-2">camera_alt</mat-icon>
-                            {{ camera.cameraName }}
-                        </div>
-                    </mat-list-option>
-                </ng-container>
-            </mat-selection-list>
-        </ng-template>
-    </mat-expansion-panel>
-</mat-accordion>
+                <ng-template #guestMessage>
+                    <h4>There are no locatios created yet. Please contact the administrator if you need to create new
+                        locations.</h4>
+                </ng-template>
+            </div>
+        </div>
+    </ng-template>
 
-<button *ngIf="isAdmin" mat-raised-button class="d-flex justify-content-center h-main-btn" (click)="addLocation()">
-    <mat-icon class="me-2">add_circle</mat-icon>
-    <span>New Location</span>
-</button>
+
+    <button *ngIf="isAdmin" mat-raised-button class="d-flex justify-content-center h-main-btn" (click)="addLocation()">
+        <mat-icon class="me-2">add_circle</mat-icon>
+        <span>New Location</span>
+    </button>
+
+</div>

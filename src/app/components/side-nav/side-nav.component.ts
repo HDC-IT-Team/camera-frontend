@@ -20,6 +20,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
   public isAdmin: boolean;
   public subscription: Subscription;
   public sharedDataTypes: any;
+  public showSpinner: boolean;
 
   constructor(
     private apiClientService: ApiClientService,
@@ -28,6 +29,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
   ) {
     this.locationList = [];
     this.isAdmin = false;
+    this.showSpinner = true;
     this.subscription = new Subscription();
     this.sharedDataTypes = SHARED_DATA_TYPES;
   }
@@ -126,9 +128,14 @@ export class SideNavComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.locationList = await lastValueFrom(this.apiClientService.getAllLocations());
-    this.locationList[0].expanded = true;
-    this.shareAdminData(this.locationList[0].id, this.locationList[0].locationName, SHARED_DATA_TYPES.location, undefined, this.locationList[0].ipFolders);
+    setTimeout(async () => {
+      this.locationList = await lastValueFrom(this.apiClientService.getAllLocations());
+      if (this.locationList.length) {
+        this.locationList[0].expanded = true;
+        this.shareAdminData(this.locationList[0].id, this.locationList[0].locationName, SHARED_DATA_TYPES.location, undefined, this.locationList[0].ipFolders);
+      }
+      this.showSpinner = false;
+    }, 1500);
   }
 
   public async addLocation() {
@@ -148,12 +155,14 @@ export class SideNavComponent implements OnInit, OnDestroy {
         formMetadata: formMetadata,
         title: 'New Location',
         recordType: SHARED_DATA_TYPES.location,
+        addUpdate: true
       },
       panelClass: 'h-position-relative'
     });
     const newLocation = await lastValueFrom(dialogRef.afterClosed());
     if (newLocation) {
       this.locationList.push(newLocation);
+      this.shareAdminData(newLocation.id, newLocation.locationName, SHARED_DATA_TYPES.location, undefined, newLocation.ipFolders);
     }
   }
 

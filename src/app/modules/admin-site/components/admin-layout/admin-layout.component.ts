@@ -10,7 +10,6 @@ import { DynamicFormMetadata } from 'src/app/interfaces/dynamic-form';
 import { IpFolder } from 'src/app/interfaces/ip-folder';
 import { ApiClientService } from 'src/app/services/api-client.service';
 import { SubjectService } from 'src/app/services/subject.service';
-import { DEFAULT_PREVIEW_IMG } from 'src/app/utils/constants';
 
 @Component({
   selector: 'app-admin-layout',
@@ -45,6 +44,8 @@ export class AdminLayoutComponent implements OnInit {
             this.adminData = JSON.parse(JSON.stringify(data));
             await this.defineBreadcrumbs();
           }
+        } else {
+          this.navigationArray = [];
         }
       })
     )
